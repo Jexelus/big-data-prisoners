@@ -29,6 +29,10 @@ async def generate_report():
         return get_report_data()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/rep")
+def get_rep():
+    return get_report_data()
 
 import json
 @app.get("/report/file")
