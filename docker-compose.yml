@@ -1,14 +1,26 @@
 
 services:
   db:
-      image: postgres:latest
-      restart: always
-      container_name: db
-      ports:
-        - "9020:5432" #op
-      volumes:
-        - ./db/db_data:/var/lib/postgresql/data
-      environment:
-        POSTGRES_USER: rootusers
-        POSTGRES_PASSWORD: rootroot
-        POSTGRES_DB: managers
+    image: postgres:15
+    restart: always
+    container_name: db
+    ports:
+      - "9020:5432" #op
+    volumes:
+      - ./db/db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: rootusers
+      POSTGRES_PASSWORD: rootroot
+      POSTGRES_DB: prisoners
+
+  crudservice:
+    image: crudservice:latest
+    build: 
+      context: ./crud
+      dockerfile: Dockerfile
+    restart: always
+    container_name: crudservice
+    ports:
+     - "8000:8000" #op
+    depends_on:
+      - db
