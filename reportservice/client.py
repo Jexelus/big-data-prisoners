@@ -13,12 +13,13 @@ def make_report():
     prisoners = get_all_prisoners()
     res = {}
     for prisoner in prisoners:
+        sentence_end = datetime.fromisoformat(prisoner["sentence_end"])
         res[str(prisoner["id"])] = {
             "name": prisoner["name"],
             "sentence_start": prisoner["sentence_start"],
             "sentence_end": prisoner["sentence_end"],
             "guard_name": prisoner["guard_name"],
-            "is_free": True if datetime.now() > prisoner["sentence_end"] else False
+            "is_free": True if datetime.now() > sentence_end else False
         }
     return res
 

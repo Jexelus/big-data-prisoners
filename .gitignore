@@ -1,2 +1,4 @@
 /db/db_data
 /reportservice/env
+/minio/.minio.sys
+/minio/main

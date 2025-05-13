@@ -5,6 +5,7 @@ from database import get_session
 from schemas import PrisonerCreate, PrisonerUpdate, PrisonerResponse
 from contextlib import asynccontextmanager
 
+REPOERT_SERVICE_URL = "http://reportservice:8000"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -59,6 +60,20 @@ def delete_prisoner(uuid: str, session: Session = Depends(get_session)):
     session.delete(prisoner)
     session.commit()
     return {"message": "Prisoner deleted successfully"}
+
+import pydantic
+import requests
+from fastapi import Request
+
+class PathData(pydantic.BaseModel):
+    path: str
+
+@app.post("/reports_by_path/")
+def proxy_reports(request: Request, pathData: PathData):
+    report_service_endpoint = REPOERT_SERVICE_URL + f"/{pathData.path}"
+    response = requests.get(report_service_endpoint)
+    return response.json()
+
 
 
 if __name__ == "__main__":
