@@ -87,6 +87,12 @@ def generate_report(session: Session = Depends(get_session)):
     print(report)
     return report
 
+@app.get("/reports/report")
+def generate_report(session: Session = Depends(get_session)):
+    report = requests.get(REPOERT_SERVICE_URL + "/report/file").json()
+    print(report)
+    return report
+
 @app.get("/reports/report_file/{report_id}")
 def get_report(report_id: str, session: Session = Depends(get_session)):
     s3_client.download_file(bucket_name, f"{report_id}", f"{report_id}")
